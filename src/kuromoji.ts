@@ -17,15 +17,15 @@
 
 "use strict";
 
-var TokenizerBuilder = require("./TokenizerBuilder");
-var DictionaryBuilder = require("./dict/builder/DictionaryBuilder");
+const TokenizerBuilder = require("./TokenizerBuilder");
+const DictionaryBuilder = require("./dict/builder/DictionaryBuilder");
 
 // Public methods
 var kuromoji = {
-    builder: function (option) {
+    builder: (option) => {
         return new TokenizerBuilder(option);
     },
-    dictionaryBuilder: function () {
+    dictionaryBuilder: () => {
         return new DictionaryBuilder();
     }
 };
