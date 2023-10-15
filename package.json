@@ -12,6 +12,8 @@
   "dependencies": {
     "async": "^2.0.1",
     "doublearray": "0.0.2",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2",
     "zlibjs": "^0.3.1"
   },
   "devDependencies": {
