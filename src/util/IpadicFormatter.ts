@@ -17,15 +17,24 @@
 
 "use strict";
 
-/**
- * Mappings between IPADIC dictionary features and tokenized results
- * @constructor
- */
-function IpadicFormatter() {
+interface IpadicFormatterToken {
+    word_id: 
 }
 
-IpadicFormatter.prototype.formatEntry = function (word_id, position, type, features) {
-    var token = {};
+class IpadicFormatter {
+  /**
+   * Mappings between IPADIC dictionary features and tokenized results
+   * @constructor
+   */
+  constructor() {}
+
+  formatEntry(
+    word_id,
+    position,
+    type,
+    features,
+  ) {
+    var token: IpadicFormatterToken = {};
     token.word_id = word_id;
     token.word_type = type;
     token.word_position = position;
@@ -42,9 +51,15 @@ IpadicFormatter.prototype.formatEntry = function (word_id, position, type, featu
     token.pronunciation = features[9];
 
     return token;
-};
+  }
 
-IpadicFormatter.prototype.formatUnknownEntry = function (word_id, position, type, features, surface_form) {
+  formatUnknownEntry(
+    word_id,
+    position,
+    type,
+    features,
+    surface_form,
+  ) {
     var token = {};
     token.word_id = word_id;
     token.word_type = type;
@@ -62,6 +77,7 @@ IpadicFormatter.prototype.formatUnknownEntry = function (word_id, position, type
     // token.pronunciation = features[9];
 
     return token;
-};
+  }
+}
 
-module.exports = IpadicFormatter;
+export default IpadicFormatter;

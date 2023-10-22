@@ -9,8 +9,8 @@ dependencies:
     specifier: ^20.8.6
     version: 20.8.6
   doublearray.ts:
-    specifier: github:MijinkoSD/doublearray.ts#make-code-typescript
-    version: github.com/MijinkoSD/doublearray.ts/c5246eab355d7ea4911713e9f63bed614bff0ab0
+    specifier: github:MijinkoSD/doublearray.ts
+    version: github.com/MijinkoSD/doublearray.ts/1714bd479073a39c49c0466ea0a47a5ea2e35827
 
 devDependencies:
   typescript:
@@ -340,8 +340,8 @@ packages:
       fsevents: 2.3.3
     dev: true
 
-  github.com/MijinkoSD/doublearray.ts/c5246eab355d7ea4911713e9f63bed614bff0ab0:
-    resolution: {tarball: https://codeload.github.com/MijinkoSD/doublearray.ts/tar.gz/c5246eab355d7ea4911713e9f63bed614bff0ab0}
+  github.com/MijinkoSD/doublearray.ts/1714bd479073a39c49c0466ea0a47a5ea2e35827:
+    resolution: {tarball: https://codeload.github.com/MijinkoSD/doublearray.ts/tar.gz/1714bd479073a39c49c0466ea0a47a5ea2e35827}
     name: doublearray.ts
     version: 0.0.2
     dependencies:

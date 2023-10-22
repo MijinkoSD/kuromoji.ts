@@ -25,6 +25,6 @@
   },
   "dependencies": {
     "@types/node": "^20.8.6",
-    "doublearray.ts": "github:MijinkoSD/doublearray.ts#make-code-typescript"
+    "doublearray.ts": "github:MijinkoSD/doublearray.ts"
   }
 }

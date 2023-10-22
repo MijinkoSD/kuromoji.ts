@@ -33,6 +33,11 @@ class Tokenizer {
   viterbi_searcher;
   formatter;
 
+  /**
+   * Tokenizer
+   * @param {DynamicDictionaries} dic Dictionaries used by this tokenizer
+   * @constructor
+   */
   constructor(dic) {
     this.token_info_dictionary = dic.token_info_dictionary;
     this.unknown_dictionary = dic.unknown_dictionary;
@@ -43,19 +48,11 @@ class Tokenizer {
 }
 
 /**
- * Tokenizer
- * @param {DynamicDictionaries} dic Dictionaries used by this tokenizer
- * @constructor
- */
-function Tokenizer(dic) {
-}
-
-/**
  * Split into sentence by punctuation
  * @param {string} input Input text
  * @returns {Array.<string>} Sentences end with punctuation
  */
-Tokenizer.splitByPunctuation = function (input) {
+Tokenizer.splitByPunctuation = function (input: string) {
   var sentences = [];
   var tail = input;
   while (true) {
@@ -78,7 +75,7 @@ Tokenizer.splitByPunctuation = function (input) {
  * @param {string} text Input text to analyze
  * @returns {Array} Tokens
  */
-Tokenizer.prototype.tokenize = function (text) {
+Tokenizer.prototype.tokenize = function (text: string) {
   var sentences = Tokenizer.splitByPunctuation(text);
   var tokens = [];
   for (var i = 0; i < sentences.length; i++) {
