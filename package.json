@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@types/node": "^20.8.6",
-    "doublearray.ts": "github:MijinkoSD/doublearray.ts"
+    "doublearray.ts": "github:MijinkoSD/doublearray.ts",
+    "zlib": "^1.0.5"
   }
 }

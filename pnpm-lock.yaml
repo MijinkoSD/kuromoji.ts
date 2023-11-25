@@ -11,6 +11,9 @@ dependencies:
   doublearray.ts:
     specifier: github:MijinkoSD/doublearray.ts
     version: github.com/MijinkoSD/doublearray.ts/1714bd479073a39c49c0466ea0a47a5ea2e35827
+  zlib:
+    specifier: ^1.0.5
+    version: 1.0.5
 
 devDependencies:
   typescript:
@@ -339,6 +342,11 @@ packages:
     optionalDependencies:
       fsevents: 2.3.3
     dev: true
+
+  /zlib@1.0.5:
+    resolution: {integrity: sha512-40fpE2II+Cd3k8HWTWONfeKE2jL+P42iWJ1zzps5W51qcTsOUKM5Q5m2PFb0CLxlmFAaUuUdJGc3OfZy947v0w==}
+    engines: {node: '>=0.2.0'}
+    dev: false
 
   github.com/MijinkoSD/doublearray.ts/1714bd479073a39c49c0466ea0a47a5ea2e35827:
     resolution: {tarball: https://codeload.github.com/MijinkoSD/doublearray.ts/tar.gz/1714bd479073a39c49c0466ea0a47a5ea2e35827}

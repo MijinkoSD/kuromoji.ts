@@ -17,8 +17,8 @@
 
 "use strict";
 
-var fs = require("fs");
-var node_zlib = require("zlib");
+import fs from "node:fs";
+import { gunzip } from "zlib";
 import DictionaryLoader from "./DictionaryLoader";
 
 /**
@@ -27,8 +27,8 @@ import DictionaryLoader from "./DictionaryLoader";
  * @param {Uint8Array} buffer Loaded buffer
  */
 export type NodeDictionaryLoaderOnLoad = (
-  err: Error | null,
-  buffer?: Uint8Array,
+  err: Object | null,
+  buffer?: ArrayBufferLike | null
 ) => void;
 
 class NodeDictionaryLoader extends DictionaryLoader {
@@ -51,7 +51,7 @@ class NodeDictionaryLoader extends DictionaryLoader {
       if (err) {
         return callback(err);
       }
-      node_zlib.gunzip(buffer, function (err2, decompressed) {
+      gunzip(buffer, function (err2, decompressed) {
         if (err2) {
           return callback(err2);
         }
