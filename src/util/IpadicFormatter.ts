@@ -17,8 +17,22 @@
 
 "use strict";
 
-interface IpadicFormatterToken {
-    word_id: 
+import { ViterbiNodeType } from "../viterbi/ViterbiNode";
+
+export interface IpadicFormatterToken {
+  word_id: number;
+  word_type: ViterbiNodeType;
+  word_position: number;
+  surface_form: string | Uint8Array;
+  pos: string;
+  pos_detail_1: string;
+  pos_detail_2: string;
+  pos_detail_3: string;
+  conjugated_type: string;
+  conjugated_form: string;
+  basic_form: string;
+  reading?: string;
+  pronunciation?: string;
 }
 
 class IpadicFormatter {
@@ -29,53 +43,54 @@ class IpadicFormatter {
   constructor() {}
 
   formatEntry(
-    word_id,
-    position,
-    type,
-    features,
-  ) {
-    var token: IpadicFormatterToken = {};
-    token.word_id = word_id;
-    token.word_type = type;
-    token.word_position = position;
+    word_id: number,
+    position: number,
+    type: ViterbiNodeType,
+    features: string[]
+  ): IpadicFormatterToken {
+    let token: IpadicFormatterToken = {
+      word_id,
+      word_type: type,
+      word_position: position,
 
-    token.surface_form = features[0];
-    token.pos = features[1];
-    token.pos_detail_1 = features[2];
-    token.pos_detail_2 = features[3];
-    token.pos_detail_3 = features[4];
-    token.conjugated_type = features[5];
-    token.conjugated_form = features[6];
-    token.basic_form = features[7];
-    token.reading = features[8];
-    token.pronunciation = features[9];
+      surface_form: features[0],
+      pos: features[1],
+      pos_detail_1: features[2],
+      pos_detail_2: features[3],
+      pos_detail_3: features[4],
+      conjugated_type: features[5],
+      conjugated_form: features[6],
+      basic_form: features[7],
+      reading: features[8],
+      pronunciation: features[9],
+    };
 
     return token;
   }
 
   formatUnknownEntry(
-    word_id,
-    position,
-    type,
-    features,
-    surface_form,
-  ) {
-    var token = {};
-    token.word_id = word_id;
-    token.word_type = type;
-    token.word_position = position;
+    word_id: number,
+    position: number,
+    type: ViterbiNodeType,
+    features: string[],
+    surface_form: string | Uint8Array
+  ): IpadicFormatterToken {
+    let token: IpadicFormatterToken = {
+      word_id,
+      word_type: type,
+      word_position: position,
 
-    token.surface_form = surface_form;
-    token.pos = features[1];
-    token.pos_detail_1 = features[2];
-    token.pos_detail_2 = features[3];
-    token.pos_detail_3 = features[4];
-    token.conjugated_type = features[5];
-    token.conjugated_form = features[6];
-    token.basic_form = features[7];
-    // token.reading = features[8];
-    // token.pronunciation = features[9];
-
+      surface_form: surface_form,
+      pos: features[1],
+      pos_detail_1: features[2],
+      pos_detail_2: features[3],
+      pos_detail_3: features[4],
+      conjugated_type: features[5],
+      conjugated_form: features[6],
+      basic_form: features[7],
+      // reading: features[8],
+      // pronunciation: features[9],
+    };
     return token;
   }
 }

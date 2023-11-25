@@ -19,6 +19,7 @@
 
 import ConnectionCosts from "../dict/ConnectionCosts";
 import ViterbiLattice from "./ViterbiLattice";
+import ViterbiNode from "./ViterbiNode";
 
 class ViterbiSearcher {
   connection_costs: ConnectionCosts;
@@ -52,7 +53,7 @@ class ViterbiSearcher {
       for (j = 0; j < nodes.length; j++) {
         var node = nodes[j];
         var cost = Number.MAX_VALUE;
-        var shortest_prev_node;
+        var shortest_prev_node: ViterbiNode | null = null;
 
         var prev_nodes = lattice.nodes_end_at[node.start_pos - 1];
         if (prev_nodes == null) {
@@ -61,8 +62,6 @@ class ViterbiSearcher {
         }
         for (k = 0; k < prev_nodes.length; k++) {
           var prev_node = prev_nodes[k];
-          // FIXME ここの分岐適当に置いたので、バグの原因になるかも
-          if (prev_node === undefined) continue;
 
           var edge_cost;
           if (node.left_id == null || prev_node.right_id == null) {
@@ -72,7 +71,7 @@ class ViterbiSearcher {
           } else {
             edge_cost = this.connection_costs.get(
               prev_node.right_id,
-              node.left_id,
+              node.left_id
             );
           }
 
@@ -90,7 +89,7 @@ class ViterbiSearcher {
     return lattice;
   }
 
-  backward(lattice) {
+  backward(lattice: ViterbiLattice) {
     var shortest_path = [];
     var eos = lattice.nodes_end_at[lattice.nodes_end_at.length - 1][0];
 
@@ -111,4 +110,4 @@ class ViterbiSearcher {
   }
 }
 
-module.exports = ViterbiSearcher;
+export default ViterbiSearcher;

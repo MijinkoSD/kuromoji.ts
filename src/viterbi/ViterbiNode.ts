@@ -17,6 +17,8 @@
 
 "use strict";
 
+export type ViterbiNodeType = "KNOWN" | "UNKNOWN" | "BOS" | "EOS";
+
 class ViterbiNode {
   name: number;
   cost: number;
@@ -24,10 +26,10 @@ class ViterbiNode {
   length: number;
   left_id: number;
   right_id: number;
-  prev: null;
-  surface_form: string;
+  prev: null | ViterbiNode;
+  surface_form: string | Uint8Array;
   shortest_cost: number;
-  type: string;
+  type: ViterbiNodeType;
 
   /**
    * ViterbiNode is a node of ViterbiLattice
@@ -46,10 +48,10 @@ class ViterbiNode {
     node_cost: number,
     start_pos: number,
     length: number,
-    type: string,
+    type: ViterbiNodeType,
     left_id: number,
     right_id: number,
-    surface_form: string,
+    surface_form: string | Uint8Array
   ) {
     this.name = node_name;
     this.cost = node_cost;
