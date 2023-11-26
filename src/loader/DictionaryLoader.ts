@@ -48,6 +48,7 @@ class DictionaryLoader {
     this.dic_path = dic_path;
   }
 
+  // @ts-ignore
   loadArrayBuffer(file: string, callback: NodeDictionaryLoaderOnLoad) {
     throw new Error("DictionaryLoader#loadArrayBuffer should be overwrite");
   }
