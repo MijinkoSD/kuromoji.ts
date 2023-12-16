@@ -19,12 +19,12 @@
 
 import { TokenizerBuilderOption } from "./TokenizerBuilder";
 
-const TokenizerBuilder = require("./TokenizerBuilder");
-const DictionaryBuilder = require("./dict/builder/DictionaryBuilder");
+import TokenizerBuilder from "./TokenizerBuilder";
+import DictionaryBuilder from "./dict/builder/DictionaryBuilder";
 
 // Public methods
-var kuromoji = {
-  builder: (option: TokenizerBuilderOption) => {
+const kuromoji = {
+  builder: (option: TokenizerBuilderOption = {}) => {
     return new TokenizerBuilder(option);
   },
   dictionaryBuilder: () => {
@@ -32,4 +32,4 @@ var kuromoji = {
   },
 };
 
-module.exports = kuromoji;
+export default kuromoji;

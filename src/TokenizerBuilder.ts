@@ -44,7 +44,7 @@ class TokenizerBuilder {
    * @param {string} option.dicPath Dictionary directory path (or URL using in browser)
    * @constructor
    */
-  constructor(option: TokenizerBuilderOption) {
+  constructor(option: TokenizerBuilderOption = {}) {
     if (option.dicPath == null) {
       this.dic_path = "dict/";
     } else {
