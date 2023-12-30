@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 
-"use strict";
-
 import path from "node:path";
 import DynamicDictionaries from "../dict/DynamicDictionaries";
 import { NodeDictionaryLoaderOnLoad } from "./NodeDictionaryLoader";
@@ -80,21 +78,16 @@ class DictionaryLoader {
         load_callback(null);
       };
 
-      const loadFunc: (() => void)[] = [];
+      // const loadFunc: Promise<void>[] = [];
       ["base.dat.gz", "check.dat.gz"].map((filename) => {
-        loadFunc.push(() =>
-          loadArrayBuffer(
-            path.join(dic_path, filename),
-            function (err, buffer) {
-              if (err) {
-                return whenErr(err);
-              }
-              whenErr(null, buffer);
-            }
-          )
-        );
+        loadArrayBuffer(path.join(dic_path, filename), function (err, buffer) {
+          if (err) {
+            return whenErr(err);
+          }
+          whenErr(null, buffer);
+        });
       });
-      await Promise.all(loadFunc);
+      // await Promise.all(loadFunc);
     };
 
     const takeDictionaryInfo = async (): Promise<void> => {
@@ -194,10 +187,10 @@ class DictionaryLoader {
     };
 
     await Promise.all([
-      trie,
-      takeDictionaryInfo,
-      connectionCostMatrix,
-      unknownDictionaries,
+      trie(),
+      takeDictionaryInfo(),
+      connectionCostMatrix(),
+      unknownDictionaries(),
     ]);
   }
 }

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import Tokenizer from "../Tokenizer";
-import kuromoji from "../kuromoji.ts";
+import Tokenizer from "../src/Tokenizer";
+import kuromoji from "../src/kuromoji";
 import { ref, onMounted } from "vue";
-import { IpadicFormatterToken } from "../util/IpadicFormatter";
+import { IpadicFormatterToken } from "../src/util/IpadicFormatter";
 
-const DIC_URL = "kuromoji/dict/";
+const DIC_URL = "dict/";
 
 const inputText = ref("");
 const tokens = ref<IpadicFormatterToken[]>([]);
@@ -143,3 +143,4 @@ text {
   fill: none;
 }
 </style>
+../src/Tokenizer.ts../src/kuromoji.ts../src/util/IpadicFormatter.ts
