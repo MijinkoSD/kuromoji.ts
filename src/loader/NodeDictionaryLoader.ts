@@ -18,7 +18,7 @@
 "use strict";
 
 import fs from "node:fs";
-import { gunzip } from "zlib";
+import { gunzip } from "node:zlib";
 import DictionaryLoader from "./DictionaryLoader";
 
 /**
@@ -47,15 +47,15 @@ class NodeDictionaryLoader extends DictionaryLoader {
    * @param {NodeDictionaryLoader~onLoad} callback Callback function
    */
   loadArrayBuffer(file: string, callback: NodeDictionaryLoaderOnLoad) {
-    fs.readFile(file, function (err, buffer) {
+    fs.readFile(file, (err, buffer) => {
       if (err) {
         return callback(err);
       }
-      gunzip(buffer, function (err2, decompressed) {
+      gunzip(buffer, (err2, decompressed) => {
         if (err2) {
           return callback(err2);
         }
-        var typed_array = new Uint8Array(decompressed);
+        const typed_array = new Uint8Array(decompressed);
         callback(null, typed_array.buffer);
       });
     });

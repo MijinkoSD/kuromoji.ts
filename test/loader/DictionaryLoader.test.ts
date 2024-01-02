@@ -17,9 +17,8 @@
 
 import { chai, describe, beforeAll, it } from "vitest";
 const expect = chai.expect;
-import DictionaryLoader from "../../src/loader/DictionaryLoader";
+import NodeDictionaryLoader from "../../src/loader/NodeDictionaryLoader";
 import DynamicDictionaries from "../../src/dict/DynamicDictionaries";
-import { resolve } from "path";
 
 const DIC_DIR = "dict/";
 
@@ -29,16 +28,17 @@ describe("DictionaryLoader", () => {
   beforeAll(
     async () =>
       new Promise((resolve) => {
-        const loader = new DictionaryLoader(DIC_DIR);
+        const loader = new NodeDictionaryLoader(DIC_DIR);
         loader.load((err, dic) => {
           if (dic === undefined) {
+            resolve();
             throw new TypeError("dic must not be undefined");
           }
           dictionaries = dic;
           resolve();
         });
       }),
-    1 * 60 * 1000 // To timeout after a minutes
+    1 * 10 * 1000 // To timeout after 10 seconds
   );
 
   it("Unknown dictionaries are loaded properly", () => {
@@ -58,24 +58,21 @@ describe("DictionaryLoader", () => {
 });
 
 describe("DictionaryLoader about loading", () => {
-  it(
-    "could load directory path without suffix /",
-    async () =>
-      new Promise<void>((resolve) => {
-        var loader = new DictionaryLoader("dict"); // not have suffix /
-        loader.load((err, dic) => {
-          expect(err).to.be.null;
-          expect(dic).to.not.be.undefined;
-          resolve();
-        });
-      }),
-    {
-      timeout: 1 * 60 * 1000, // 1 minutes
-    }
-  );
+  // 正常系テスト
+  it("could load directory path without suffix /", async () =>
+    new Promise<void>((resolve) => {
+      const loader = new NodeDictionaryLoader("dict"); // not have suffix /
+      loader.load((err, dic) => {
+        expect(err).to.be.null;
+        expect(dic).to.not.be.undefined;
+        resolve();
+      });
+    }));
+
+  // 異常系テスト
   it("couldn't load dictionary, then call with error", async () =>
     new Promise<void>((resolve) => {
-      var loader = new DictionaryLoader("non-exist/dictionaries");
+      const loader = new NodeDictionaryLoader("non-exist/dictionaries");
       loader.load((err, dic) => {
         expect(err).to.be.an.instanceof(Error);
         resolve();

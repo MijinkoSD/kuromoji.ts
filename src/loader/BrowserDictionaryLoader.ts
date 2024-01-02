@@ -17,7 +17,7 @@
 
 "use strict";
 
-import { gunzip } from "zlib";
+import { gunzip } from "node:zlib";
 import DictionaryLoader from "./DictionaryLoader";
 import { NodeDictionaryLoaderOnLoad } from "./NodeDictionaryLoader";
 

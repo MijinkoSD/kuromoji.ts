@@ -18,7 +18,7 @@
 "use strict";
 
 import Tokenizer from "./Tokenizer";
-import DictionaryLoader from "./loader/DictionaryLoader";
+import NodeDictionaryLoader from "./loader/NodeDictionaryLoader";
 
 export interface TokenizerBuilderOption {
   dicPath?: string;
@@ -32,7 +32,7 @@ export interface TokenizerBuilderOption {
  */
 export type TokenizerBuilderOnLoad = (
   err: Object | null,
-  tokenizer: Tokenizer
+  tokenizer?: Tokenizer
 ) => void;
 
 class TokenizerBuilder {
@@ -56,10 +56,9 @@ class TokenizerBuilder {
    * Build Tokenizer instance by asynchronous manner
    * @param {TokenizerBuilder~onLoad} callback Callback function
    */
-  build(callback: TokenizerBuilderOnLoad) {
-    var loader = new DictionaryLoader(this.dic_path);
-    loader.load(function (err, dic) {
-      if (dic === undefined) return;
+  async build(callback: TokenizerBuilderOnLoad) {
+    const loader = new NodeDictionaryLoader(this.dic_path);
+    await loader.load((err, dic) => {
       callback(err, new Tokenizer(dic));
     });
   }
