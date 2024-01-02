@@ -17,7 +17,6 @@
 
 import path from "node:path";
 import DynamicDictionaries from "../dict/DynamicDictionaries";
-import { NodeDictionaryLoaderOnLoad } from "./NodeDictionaryLoader";
 
 // import "../../public/kuromoji/";
 
@@ -30,6 +29,12 @@ import { NodeDictionaryLoaderOnLoad } from "./NodeDictionaryLoader";
 export type DictionaryLoaderOnLoad = (
   err: Object | null,
   dic: DynamicDictionaries
+) => void;
+
+export type LoadArrayBufferCallback = (
+  // 本当は(Error | null)[]にしたいけれど、BrowserDictionaryLoader側との互換性がなくなるのでできない
+  err: Object | null,
+  buffer?: ArrayBufferLike | null
 ) => void;
 
 class DictionaryLoader {
@@ -47,7 +52,7 @@ class DictionaryLoader {
   }
 
   // @ts-ignore
-  loadArrayBuffer(file: string, callback: NodeDictionaryLoaderOnLoad) {
+  async loadArrayBuffer(file: string, callback: LoadArrayBufferCallback) {
     throw new Error("DictionaryLoader#loadArrayBuffer should be overwrite");
   }
 
@@ -60,21 +65,10 @@ class DictionaryLoader {
     const dic_path = this.dic_path;
     const loadArrayBuffer = this.loadArrayBuffer;
 
-    let prepared_callback_args:
-      | {
-          err: Object | null;
-          dic: DynamicDictionaries;
-        }
-      | undefined;
+    let prepared_callback_errs: (Object | null)[] = [];
 
-    const prepareCallback = (
-      err: Object | null,
-      dic: DynamicDictionaries
-    ): void => {
-      prepared_callback_args = {
-        err,
-        dic,
-      };
+    const prepareCallback = (err: Object | null): void => {
+      prepared_callback_errs.push(err);
     };
 
     const trie = async (): Promise<void> => {
@@ -83,7 +77,7 @@ class DictionaryLoader {
         buffers?: ArrayBufferLike | null
       ) => {
         if (err || buffers === undefined || buffers === null) {
-          prepareCallback(err, dic);
+          prepareCallback(err);
           return;
         }
         // 型エラーの握り潰し
@@ -92,12 +86,12 @@ class DictionaryLoader {
         var check_buffer = new Int32Array(_buffers[1]);
 
         dic.loadTrie(base_buffer, check_buffer);
-        prepareCallback(null, dic);
+        prepareCallback(null);
       };
 
       // const loadFunc: Promise<void>[] = [];
-      ["base.dat.gz", "check.dat.gz"].map((filename) => {
-        loadArrayBuffer(path.join(dic_path, filename), (err, buffer) => {
+      ["base.dat.gz", "check.dat.gz"].map(async (filename) => {
+        await loadArrayBuffer(path.join(dic_path, filename), (err, buffer) => {
           if (err) {
             return whenErr(err);
           }
@@ -113,7 +107,7 @@ class DictionaryLoader {
         buffers?: ArrayBufferLike | null
       ) => {
         if (err || buffers === undefined || buffers === null) {
-          return prepareCallback(err, dic);
+          return prepareCallback(err);
         }
         // 型エラーの握り潰し
         const _buffers = buffers as Uint8Array;
@@ -126,30 +120,31 @@ class DictionaryLoader {
           pos_buffer,
           target_map_buffer
         );
-        prepareCallback(null, dic);
+        prepareCallback(null);
       };
 
       const loadFunc: (() => void)[] = [];
       ["tid.dat.gz", "tid_pos.dat.gz", "tid_map.dat.gz"].map((filename) => {
-        loadFunc.push(() =>
-          loadArrayBuffer(
-            path.join(dic_path, filename),
-            function (err, buffer) {
-              if (err) {
-                return whenErr(err);
+        loadFunc.push(
+          async () =>
+            await loadArrayBuffer(
+              path.join(dic_path, filename),
+              function (err, buffer) {
+                if (err) {
+                  return whenErr(err);
+                }
+                whenErr(null, buffer);
               }
-              whenErr(null, buffer);
-            }
-          )
+            )
         );
       });
       await Promise.all(loadFunc);
     };
 
     const connectionCostMatrix = async (): Promise<void> => {
-      loadArrayBuffer(path.join(dic_path, "cc.dat.gz"), (err, buffer) => {
+      await loadArrayBuffer(path.join(dic_path, "cc.dat.gz"), (err, buffer) => {
         if (err) {
-          return prepareCallback(err, dic);
+          return prepareCallback(err);
         }
         let cc_buffer: Int16Array;
         if (buffer === null || buffer === undefined) {
@@ -158,7 +153,7 @@ class DictionaryLoader {
           cc_buffer = new Int16Array(buffer);
         }
         dic.loadConnectionCosts(cc_buffer);
-        prepareCallback(null, dic);
+        prepareCallback(null);
       });
     };
 
@@ -168,7 +163,7 @@ class DictionaryLoader {
         buffers?: ArrayBufferLike | null
       ) => {
         if (err || !buffers) {
-          return prepareCallback(err, dic);
+          return prepareCallback(err);
         }
         // 型エラーの握り潰し
         const _buffers = buffers as Uint8Array;
@@ -188,7 +183,7 @@ class DictionaryLoader {
           invoke_def_buffer
         );
         // dic.loadUnknownDictionaries(char_buffer, unk_buffer);
-        prepareCallback(null, dic);
+        prepareCallback(null);
       };
 
       [
@@ -198,8 +193,8 @@ class DictionaryLoader {
         "unk_char.dat.gz",
         "unk_compat.dat.gz",
         "unk_invoke.dat.gz",
-      ].map((filename) => {
-        loadArrayBuffer(path.join(dic_path, filename), (err, buffer) => {
+      ].map(async (filename) => {
+        await loadArrayBuffer(path.join(dic_path, filename), (err, buffer) => {
           if (err) {
             return whenErr(err);
           }
@@ -215,11 +210,11 @@ class DictionaryLoader {
       connectionCostMatrix(),
       unknownDictionaries(),
     ]).catch((error) => {
-      prepareCallback(error, dic);
+      prepareCallback(error);
     });
 
-    if (prepared_callback_args !== undefined) {
-      load_callback(prepared_callback_args.err, prepared_callback_args.dic);
+    if (prepared_callback_errs.length > 0) {
+      load_callback(prepared_callback_errs, dic);
     }
   }
 }

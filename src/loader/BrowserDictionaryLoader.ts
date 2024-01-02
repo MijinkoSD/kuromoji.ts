@@ -19,7 +19,6 @@
 
 import { gunzip } from "node:zlib";
 import DictionaryLoader from "./DictionaryLoader";
-import { NodeDictionaryLoaderOnLoad } from "./NodeDictionaryLoader";
 
 /**
  * Callback
@@ -27,10 +26,10 @@ import { NodeDictionaryLoaderOnLoad } from "./NodeDictionaryLoader";
  * @param {Object} err Error object
  * @param {Uint8Array} buffer Loaded buffer
  */
-// export type BrowserDictionaryLoaderOnLoad = (
-//   err: Object | null,
-//   buffer: ArrayBufferLike | null
-// ) => void;
+export type BrowserDictionaryLoaderOnLoad = (
+  err: string | ProgressEvent<EventTarget> | null,
+  buffer: ArrayBufferLike | null
+) => void;
 
 class BrowserDictionaryLoader extends DictionaryLoader {
   /**
@@ -47,25 +46,30 @@ class BrowserDictionaryLoader extends DictionaryLoader {
    * @param {string} url Dictionary URL
    * @param {BrowserDictionaryLoader~onLoad} callback Callback function
    */
-  loadArrayBuffer(url: string, callback: NodeDictionaryLoaderOnLoad) {
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", url, true);
-    xhr.responseType = "arraybuffer";
-    xhr.onload = function () {
-      if (this.status > 0 && this.status !== 200) {
-        callback(xhr.statusText, null);
-        return;
-      }
-      const arraybuffer = this.response as ArrayBuffer;
+  async loadArrayBuffer(url: string, callback: BrowserDictionaryLoaderOnLoad) {
+    return new Promise<void>((resolve) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open("GET", url, true);
+      xhr.responseType = "arraybuffer";
+      xhr.onload = function () {
+        if (this.status > 0 && this.status !== 200) {
+          callback(xhr.statusText, null);
+          resolve();
+          return;
+        }
+        const arraybuffer = this.response as ArrayBuffer;
 
-      gunzip(arraybuffer, (_, result) => {
-        callback(null, result.buffer);
-      });
-    };
-    xhr.onerror = function (err) {
-      callback(err, null);
-    };
-    xhr.send();
+        gunzip(arraybuffer, (_, result) => {
+          callback(null, result.buffer);
+          resolve();
+        });
+      };
+      xhr.onerror = function (err) {
+        callback(err, null);
+        resolve();
+      };
+      xhr.send();
+    });
   }
 }
 

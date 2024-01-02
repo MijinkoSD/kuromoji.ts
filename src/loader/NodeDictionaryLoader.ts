@@ -27,7 +27,7 @@ import DictionaryLoader from "./DictionaryLoader";
  * @param {Uint8Array} buffer Loaded buffer
  */
 export type NodeDictionaryLoaderOnLoad = (
-  err: Object | null,
+  err: Error | null,
   buffer?: ArrayBufferLike | null
 ) => void;
 
@@ -46,17 +46,24 @@ class NodeDictionaryLoader extends DictionaryLoader {
    * @param {string} file Dictionary file path
    * @param {NodeDictionaryLoader~onLoad} callback Callback function
    */
-  loadArrayBuffer(file: string, callback: NodeDictionaryLoaderOnLoad) {
-    fs.readFile(file, (err, buffer) => {
-      if (err) {
-        return callback(err);
-      }
-      gunzip(buffer, (err2, decompressed) => {
-        if (err2) {
-          return callback(err2);
+  async loadArrayBuffer(file: string, callback: NodeDictionaryLoaderOnLoad) {
+    return new Promise<void>((resolve) => {
+      fs.readFile(file, (err, buffer) => {
+        if (err) {
+          callback(err);
+          resolve();
+          return;
         }
-        const typed_array = new Uint8Array(decompressed);
-        callback(null, typed_array.buffer);
+        gunzip(buffer, (err2, decompressed) => {
+          if (err2) {
+            callback(err2);
+            resolve();
+            return;
+          }
+          const typed_array = new Uint8Array(decompressed);
+          callback(null, typed_array.buffer);
+          resolve();
+        });
       });
     });
   }
