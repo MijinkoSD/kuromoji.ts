@@ -55,13 +55,13 @@ class Tokenizer {
    * @returns {Array.<string>} Sentences end with punctuation
    */
   static splitByPunctuation(input: string): string[] {
-    var sentences = [];
-    var tail = input;
+    const sentences = [];
+    let tail = input;
     while (true) {
       if (tail === "") {
         break;
       }
-      var index = tail.search(PUNCTUATION);
+      const index = tail.search(PUNCTUATION);
       if (index < 0) {
         sentences.push(tail);
         break;
@@ -78,30 +78,35 @@ class Tokenizer {
    * @returns {Array} Tokens
    */
   tokenize(text: string) {
-    var sentences = Tokenizer.splitByPunctuation(text);
-    var tokens: IpadicFormatterToken[] = [];
-    for (var i = 0; i < sentences.length; i++) {
-      var sentence = sentences[i];
-      this.tokenizeForSentence(sentence, tokens);
+    const sentences = Tokenizer.splitByPunctuation(text);
+    const tokens: IpadicFormatterToken[] = [];
+    for (let i = 0; i < sentences.length; i++) {
+      const sentence = sentences[i];
+      tokens.push(...this.tokenizeForSentence(sentence, tokens));
     }
     return tokens;
   }
 
-  tokenizeForSentence(sentence: string, tokens?: IpadicFormatterToken[]) {
+  tokenizeForSentence(
+    sentence: string,
+    tokens?: IpadicFormatterToken[]
+  ): IpadicFormatterToken[] {
     if (tokens === undefined) {
       tokens = [];
     }
-    var lattice = this.getLattice(sentence);
-    var best_path = this.viterbi_searcher.search(lattice);
-    var last_pos = 0;
+    const lattice = this.getLattice(sentence);
+    const best_path = this.viterbi_searcher.search(lattice);
+    let last_pos = 0;
     if (tokens.length > 0) {
       last_pos = tokens[tokens.length - 1].word_position;
     }
 
-    for (var j = 0; j < best_path.length; j++) {
-      var node = best_path[j];
+    const result: IpadicFormatterToken[] = [];
 
-      var token: IpadicFormatterToken,
+    for (let j = 0; j < best_path.length; j++) {
+      const node = best_path[j];
+
+      let token: IpadicFormatterToken,
         features: string[],
         features_line: string;
       if (node.type === "KNOWN") {
@@ -146,10 +151,10 @@ class Tokenizer {
         );
       }
 
-      tokens.push(token);
+      result.push(token);
     }
 
-    return tokens;
+    return result;
   }
 
   /**

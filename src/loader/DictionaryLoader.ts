@@ -17,6 +17,7 @@
 
 import path from "node:path";
 import DynamicDictionaries from "../dict/DynamicDictionaries";
+import { isNotContainUndefined } from "../util/TypeGuard";
 
 // import "../../public/kuromoji/";
 
@@ -72,48 +73,54 @@ class DictionaryLoader {
     };
 
     const trie = async (): Promise<void> => {
-      const whenErr = (
-        err: Object | null,
-        buffers?: ArrayBufferLike | null
-      ) => {
-        if (err || buffers === undefined || buffers === null) {
+      const buffers: ArrayBufferLike[] = [];
+
+      const whenErr = (err: Object | null, buffers?: ArrayBufferLike[]) => {
+        if (err || buffers === undefined) {
           prepareCallback(err);
           return;
         }
-        // 型エラーの握り潰し
-        const _buffers = buffers as Uint8Array;
-        var base_buffer = new Int32Array(_buffers[0]);
-        var check_buffer = new Int32Array(_buffers[1]);
+        const base_buffer = new Int32Array(buffers[0]);
+        const check_buffer = new Int32Array(buffers[1]);
 
         dic.loadTrie(base_buffer, check_buffer);
         prepareCallback(null);
       };
 
       // const loadFunc: Promise<void>[] = [];
-      ["base.dat.gz", "check.dat.gz"].map(async (filename) => {
-        await loadArrayBuffer(path.join(dic_path, filename), (err, buffer) => {
-          if (err) {
-            return whenErr(err);
-          }
-          whenErr(null, buffer);
-        });
-      });
+      await Promise.all(
+        ["base.dat.gz", "check.dat.gz"].map(async (filename) => {
+          await loadArrayBuffer(
+            path.join(dic_path, filename),
+            (err, buffer) => {
+              if (err || buffer === undefined || buffer == null) {
+                return whenErr(err);
+              }
+              buffers.push(buffer);
+            }
+          );
+        })
+      );
+      whenErr(null, buffers);
       // await Promise.all(loadFunc);
     };
 
     const takeDictionaryInfo = async (): Promise<void> => {
+      // const buffers: ArrayBufferLike[] = [];
+
       const whenErr = (
         err: Object | null,
-        buffers?: ArrayBufferLike | null
+        buffers?: (ArrayBufferLike | undefined)[] | null
       ) => {
         if (err || buffers === undefined || buffers === null) {
           return prepareCallback(err);
         }
-        // 型エラーの握り潰し
-        const _buffers = buffers as Uint8Array;
-        var token_info_buffer = new Uint8Array(_buffers[0]);
-        var pos_buffer = new Uint8Array(_buffers[1]);
-        var target_map_buffer = new Uint8Array(_buffers[2]);
+        if (!isNotContainUndefined(buffers)) {
+          return prepareCallback(err);
+        }
+        const token_info_buffer = new Uint8Array(buffers[0]);
+        const pos_buffer = new Uint8Array(buffers[1]);
+        const target_map_buffer = new Uint8Array(buffers[2]);
 
         dic.loadTokenInfoDictionaries(
           token_info_buffer,
@@ -123,22 +130,24 @@ class DictionaryLoader {
         prepareCallback(null);
       };
 
-      const loadFunc: (() => void)[] = [];
-      ["tid.dat.gz", "tid_pos.dat.gz", "tid_map.dat.gz"].map((filename) => {
-        loadFunc.push(
-          async () =>
+      const buffers: (ArrayBufferLike | undefined)[] = await Promise.all(
+        ["tid.dat.gz", "tid_pos.dat.gz", "tid_map.dat.gz"].map(
+          async (filename): Promise<ArrayBufferLike | undefined> => {
+            let result: ArrayBufferLike | undefined;
             await loadArrayBuffer(
               path.join(dic_path, filename),
-              function (err, buffer) {
-                if (err) {
+              (err, buffer) => {
+                if (err || buffer === undefined || buffer == null) {
                   return whenErr(err);
                 }
-                whenErr(null, buffer);
+                result = buffer;
               }
-            )
-        );
-      });
-      await Promise.all(loadFunc);
+            );
+            return result;
+          }
+        )
+      );
+      whenErr(null, buffers);
     };
 
     const connectionCostMatrix = async (): Promise<void> => {
@@ -158,21 +167,24 @@ class DictionaryLoader {
     };
 
     const unknownDictionaries = async (): Promise<void> => {
+      // const buffers: ArrayBufferLike[] = [];
+
       const whenErr = (
         err: Object | null,
-        buffers?: ArrayBufferLike | null
+        buffers?: (ArrayBufferLike | undefined)[] | null
       ) => {
         if (err || !buffers) {
           return prepareCallback(err);
         }
-        // 型エラーの握り潰し
-        const _buffers = buffers as Uint8Array;
-        var unk_buffer = new Uint8Array(_buffers[0]);
-        var unk_pos_buffer = new Uint8Array(_buffers[1]);
-        var unk_map_buffer = new Uint8Array(_buffers[2]);
-        var cat_map_buffer = new Uint8Array(_buffers[3]);
-        var compat_cat_map_buffer = new Uint32Array(_buffers[4]);
-        var invoke_def_buffer = new Uint8Array(_buffers[5]);
+        if (!isNotContainUndefined(buffers)) {
+          return prepareCallback(err);
+        }
+        const unk_buffer = new Uint8Array(buffers[0]);
+        const unk_pos_buffer = new Uint8Array(buffers[1]);
+        const unk_map_buffer = new Uint8Array(buffers[2]);
+        const cat_map_buffer = new Uint8Array(buffers[3]);
+        const compat_cat_map_buffer = new Uint32Array(buffers[4]);
+        const invoke_def_buffer = new Uint8Array(buffers[5]);
 
         dic.loadUnknownDictionaries(
           unk_buffer,
@@ -186,24 +198,31 @@ class DictionaryLoader {
         prepareCallback(null);
       };
 
-      [
-        "unk.dat.gz",
-        "unk_pos.dat.gz",
-        "unk_map.dat.gz",
-        "unk_char.dat.gz",
-        "unk_compat.dat.gz",
-        "unk_invoke.dat.gz",
-      ].map(async (filename) => {
-        await loadArrayBuffer(path.join(dic_path, filename), (err, buffer) => {
-          if (err) {
-            return whenErr(err);
-          }
-          whenErr(null, buffer);
-        });
-      });
+      const buffers = await Promise.all(
+        [
+          "unk.dat.gz",
+          "unk_pos.dat.gz",
+          "unk_map.dat.gz",
+          "unk_char.dat.gz",
+          "unk_compat.dat.gz",
+          "unk_invoke.dat.gz",
+        ].map(async (filename) => {
+          let result: ArrayBufferLike | undefined;
+          await loadArrayBuffer(
+            path.join(dic_path, filename),
+            (err, buffer) => {
+              if (err || buffer === undefined || buffer === null) {
+                return whenErr(err);
+              }
+              result = buffer;
+            }
+          );
+          return result;
+        })
+      );
+      whenErr(null, buffers);
     };
 
-    // FIXME: awaitされてない
     await Promise.all([
       trie(),
       takeDictionaryInfo(),

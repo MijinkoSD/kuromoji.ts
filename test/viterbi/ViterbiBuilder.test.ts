@@ -26,15 +26,13 @@ describe("ViterbiBuilder", () => {
   let viterbi_builder: ViterbiBuilder; // target object
 
   beforeAll(
-    async () =>
-      new Promise((resolve) => {
-        const loader = new DictionaryLoader(DIC_DIR);
-        loader.load((err, dic) => {
-          if (dic === undefined) throw TypeError("dic must not be undefined");
-          viterbi_builder = new ViterbiBuilder(dic);
-          resolve();
-        });
-      }),
+    async () => {
+      const loader = new DictionaryLoader(DIC_DIR);
+      await loader.load((err, dic) => {
+        if (dic === undefined) throw TypeError("dic must not be undefined");
+        viterbi_builder = new ViterbiBuilder(dic);
+      });
+    },
     5 * 60 * 1000 // To timeout after 5 minutes
   );
 

@@ -62,7 +62,7 @@ class TokenInfoDictionary {
         right_id,
         word_cost,
         surface_form,
-        feature,
+        feature
       );
       dictionary_entries[token_info_id] = surface_form;
     }
@@ -79,7 +79,7 @@ class TokenInfoDictionary {
     right_id: number,
     word_cost: number,
     surface_form: string,
-    feature: string,
+    feature: string
   ) {
     var token_info_id = this.dictionary.position;
     var pos_id = this.pos_buffer.position;
@@ -94,10 +94,10 @@ class TokenInfoDictionary {
   }
 
   addMapping(source: number, target: number) {
-    var mapping = this.target_map[source];
-    if (mapping == null) {
-      mapping = [];
-    }
+    const mapping = this.target_map[source] ?? [];
+    // if (mapping == null) {
+    //   mapping = [];
+    // }
     mapping.push(target);
 
     this.target_map[source] = mapping;
@@ -133,18 +133,18 @@ class TokenInfoDictionary {
 
   // from tid_map.dat
   loadTargetMap(array_buffer: Uint8Array) {
-    var buffer = new ByteBuffer(array_buffer);
+    const buffer = new ByteBuffer(array_buffer);
     buffer.position = 0;
     this.target_map = {};
     buffer.readInt(); // map_keys_size
-    while (true) {
-      if (buffer.buffer.length < buffer.position + 1) {
-        break;
-      }
-      var key = buffer.readInt();
-      var map_values_size = buffer.readInt();
-      for (var i = 0; i < map_values_size; i++) {
-        var value = buffer.readInt();
+    while (buffer.buffer.length > buffer.position) {
+      // if (buffer.buffer.length < buffer.position + 1) {
+      //   break;
+      // }
+      const key = buffer.readInt();
+      const map_values_size = buffer.readInt();
+      for (let i = 0; i < map_values_size; i++) {
+        const value = buffer.readInt();
         this.addMapping(key, value);
       }
     }

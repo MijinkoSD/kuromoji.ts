@@ -15,15 +15,12 @@
  * limitations under the License.
  */
 
-"use strict";
-
-import doublearray from "doublearray.ts";
-
 import TokenInfoDictionary from "./TokenInfoDictionary";
 import ConnectionCosts from "./ConnectionCosts";
 import UnknownDictionary from "./UnknownDictionary";
-import DoubleArray from "doublearray.ts/dist/doubleArrayClass";
-import { ArrayBuffer } from "doublearray.ts/dist/types";
+import doublearray from "doublearray.ts";
+import type DoubleArray from "doublearray.ts/dist/doubleArrayClass.js";
+import { ArrayBuffer } from "doublearray.ts/dist/types.js";
 
 class DynamicDictionaries {
   trie: DoubleArray;
@@ -43,14 +40,12 @@ class DynamicDictionaries {
     trie?: DoubleArray | null,
     token_info_dictionary?: TokenInfoDictionary | null,
     connection_costs?: ConnectionCosts | null,
-    unknown_dictionary?: UnknownDictionary | null,
+    unknown_dictionary?: UnknownDictionary | null
   ) {
     if (trie != null) {
       this.trie = trie;
     } else {
-      this.trie = doublearray.builder(0).build([
-        { k: "", v: 1 },
-      ]);
+      this.trie = doublearray.builder(0).build([{ k: "", v: 1 }]);
     }
     if (token_info_dictionary != null) {
       this.token_info_dictionary = token_info_dictionary;
@@ -78,7 +73,7 @@ class DynamicDictionaries {
   loadTokenInfoDictionaries(
     token_info_buffer: Uint8Array,
     pos_buffer: Uint8Array,
-    target_map_buffer: Uint8Array,
+    target_map_buffer: Uint8Array
   ) {
     this.token_info_dictionary.loadDictionary(token_info_buffer);
     this.token_info_dictionary.loadPosVector(pos_buffer);
@@ -95,7 +90,7 @@ class DynamicDictionaries {
     unk_map_buffer: Uint8Array,
     cat_map_buffer: Uint8Array,
     compat_cat_map_buffer: Uint32Array,
-    invoke_def_buffer: Uint8Array,
+    invoke_def_buffer: Uint8Array
   ) {
     this.unknown_dictionary.loadUnknownDictionaries(
       unk_buffer,
@@ -103,7 +98,7 @@ class DynamicDictionaries {
       unk_map_buffer,
       cat_map_buffer,
       compat_cat_map_buffer,
-      invoke_def_buffer,
+      invoke_def_buffer
     );
   }
 }

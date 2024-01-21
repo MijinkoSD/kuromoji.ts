@@ -9,8 +9,8 @@ dependencies:
     specifier: ^20.10.6
     version: 20.10.6
   doublearray.ts:
-    specifier: github:MijinkoSD/doublearray.ts
-    version: github.com/MijinkoSD/doublearray.ts/ee258c4871ee7f8c938c25f8d4b5b5e432374f29
+    specifier: ^0.1.1
+    version: 0.1.1
 
 devDependencies:
   '@vitejs/plugin-vue':
@@ -907,6 +907,12 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dev: true
 
+  /doublearray.ts@0.1.1:
+    resolution: {integrity: sha512-xCMUZp+0XcTyESmH+sEzSovnTozzjq4WxoUXpI9gQ8Sdj8kBMYeEVh4HZfFZGJOsIqakPyFdqwoWGNwBsdtwzw==}
+    dependencies:
+      '@types/node': 20.10.6
+    dev: false
+
   /entities@4.5.0:
     resolution: {integrity: sha512-V0hjH4dGPh9Ao5p0MoRY6BVqtwCjhz6vI5LT8AJ55H+4g9/4vbHx1I54fS0XuclLhDHArPQCiMjDxjaL8fPxhw==}
     engines: {node: '>=0.12'}
@@ -1736,11 +1742,3 @@ packages:
     resolution: {integrity: sha512-9bnSc/HEW2uRy67wc+T8UwauLuPJVn28jb+GtJY16iiKWyvmYJRXVT4UamsAEGQfPohgr2q4Tq0sQbQlxTfi1g==}
     engines: {node: '>=12.20'}
     dev: true
-
-  github.com/MijinkoSD/doublearray.ts/ee258c4871ee7f8c938c25f8d4b5b5e432374f29:
-    resolution: {tarball: https://codeload.github.com/MijinkoSD/doublearray.ts/tar.gz/ee258c4871ee7f8c938c25f8d4b5b5e432374f29}
-    name: doublearray.ts
-    version: 0.1.0
-    dependencies:
-      '@types/node': 20.10.6
-    dev: false
