@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 
-"use strict";
-
 import ConnectionCosts from "../dict/ConnectionCosts";
 import ViterbiLattice from "./ViterbiLattice";
 import ViterbiNode from "./ViterbiNode";
@@ -44,26 +42,23 @@ class ViterbiSearcher {
   }
 
   forward(lattice: ViterbiLattice) {
-    var i, j, k;
-    for (i = 1; i <= lattice.eos_pos; i++) {
-      var nodes = lattice.nodes_end_at[i];
-      if (nodes == null) {
+    for (let i = 1; i <= lattice.eos_pos; i++) {
+      const nodes = lattice.nodes_end_at[i];
+      if (nodes === undefined) {
         continue;
       }
-      for (j = 0; j < nodes.length; j++) {
-        var node = nodes[j];
-        var cost = Number.MAX_VALUE;
-        var shortest_prev_node: ViterbiNode | null = null;
+      for (const node of nodes) {
+        let cost = Number.MAX_VALUE;
+        let shortest_prev_node: ViterbiNode | null = null;
 
-        var prev_nodes = lattice.nodes_end_at[node.start_pos - 1];
-        if (prev_nodes == null) {
+        const index = node.start_pos - 1;
+        if (!(index in lattice.nodes_end_at)) {
           // TODO process unknown words (repair word lattice)
           continue;
         }
-        for (k = 0; k < prev_nodes.length; k++) {
-          var prev_node = prev_nodes[k];
-
-          var edge_cost;
+        const prev_nodes = lattice.nodes_end_at[index];
+        for (const prev_node of prev_nodes) {
+          let edge_cost;
           if (node.left_id == null || prev_node.right_id == null) {
             // TODO assert
             console.log("Left or right is null");
@@ -75,7 +70,7 @@ class ViterbiSearcher {
             );
           }
 
-          var _cost = prev_node.shortest_cost + edge_cost + node.cost;
+          const _cost = prev_node.shortest_cost + edge_cost + node.cost;
           if (_cost < cost) {
             shortest_prev_node = prev_node;
             cost = _cost;
@@ -89,11 +84,11 @@ class ViterbiSearcher {
     return lattice;
   }
 
-  backward(lattice: ViterbiLattice) {
-    var shortest_path = [];
-    var eos = lattice.nodes_end_at[lattice.nodes_end_at.length - 1][0];
+  backward(lattice: ViterbiLattice): ViterbiNode[] {
+    const shortest_path = [];
+    const eos = lattice.nodes_end_at[lattice.nodes_end_at.length - 1][0];
 
-    var node_back = eos.prev;
+    let node_back = eos.prev;
     if (node_back == null) {
       return [];
     }

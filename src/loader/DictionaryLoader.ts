@@ -16,8 +16,8 @@
  */
 
 import path from "node:path";
-import DynamicDictionaries from "../dict/DynamicDictionaries";
-import { isNotContainUndefined } from "../util/TypeGuard";
+import DynamicDictionaries from "../dict/DynamicDictionaries.js";
+import { isNotContainUndefined } from "../util/TypeGuard.js";
 
 // import "../../public/kuromoji/";
 

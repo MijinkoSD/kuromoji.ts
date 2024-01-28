@@ -17,13 +17,13 @@
 
 "use strict";
 
-import ViterbiNode from "./ViterbiNode";
-import ViterbiLattice from "./ViterbiLattice";
-import SurrogateAwareString from "../util/SurrogateAwareString";
-import DynamicDictionaries from "../dict/DynamicDictionaries";
-import DoubleArray from "doublearray.ts/dist/doubleArrayClass";
-import TokenInfoDictionary from "../dict/TokenInfoDictionary";
-import UnknownDictionary from "../dict/UnknownDictionary";
+import ViterbiNode from "./ViterbiNode.js";
+import ViterbiLattice from "./ViterbiLattice.js";
+import SurrogateAwareString from "../util/SurrogateAwareString.js";
+import DynamicDictionaries from "../dict/DynamicDictionaries.js";
+import DoubleArray from "doublearray.ts/dist/doubleArrayClass.js";
+import TokenInfoDictionary from "../dict/TokenInfoDictionary.js";
+import UnknownDictionary from "../dict/UnknownDictionary.js";
 
 class ViterbiBuilder {
   trie: DoubleArray;

@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 
-"use strict";
-
 import ViterbiBuilder from "./viterbi/ViterbiBuilder";
 import ViterbiSearcher from "./viterbi/ViterbiSearcher";
 import IpadicFormatter from "./util/IpadicFormatter";
@@ -80,8 +78,7 @@ class Tokenizer {
   tokenize(text: string) {
     const sentences = Tokenizer.splitByPunctuation(text);
     const tokens: IpadicFormatterToken[] = [];
-    for (let i = 0; i < sentences.length; i++) {
-      const sentence = sentences[i];
+    for (const sentence of sentences) {
       tokens.push(...this.tokenizeForSentence(sentence, tokens));
     }
     return tokens;
@@ -103,9 +100,7 @@ class Tokenizer {
 
     const result: IpadicFormatterToken[] = [];
 
-    for (let j = 0; j < best_path.length; j++) {
-      const node = best_path[j];
-
+    for (const node of best_path) {
       let token: IpadicFormatterToken,
         features: string[],
         features_line: string;

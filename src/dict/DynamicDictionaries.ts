@@ -68,6 +68,7 @@ class DynamicDictionaries {
   // from base.dat & check.dat
   loadTrie(base_buffer: ArrayBuffer, check_buffer: ArrayBuffer) {
     this.trie = doublearray.load(base_buffer, check_buffer);
+    return this;
   }
 
   loadTokenInfoDictionaries(
@@ -78,10 +79,12 @@ class DynamicDictionaries {
     this.token_info_dictionary.loadDictionary(token_info_buffer);
     this.token_info_dictionary.loadPosVector(pos_buffer);
     this.token_info_dictionary.loadTargetMap(target_map_buffer);
+    return this;
   }
 
   loadConnectionCosts(cc_buffer: Int16Array) {
     this.connection_costs.loadConnectionCosts(cc_buffer);
+    return this;
   }
 
   loadUnknownDictionaries(
@@ -100,6 +103,7 @@ class DynamicDictionaries {
       compat_cat_map_buffer,
       invoke_def_buffer
     );
+    return this;
   }
 }
 

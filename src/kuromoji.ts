@@ -17,10 +17,10 @@
 
 "use strict";
 
-import { TokenizerBuilderOption } from "./TokenizerBuilder";
+import { TokenizerBuilderOption } from "./TokenizerBuilder.js";
 
-import TokenizerBuilder from "./TokenizerBuilder";
-import DictionaryBuilder from "./dict/builder/DictionaryBuilder";
+import TokenizerBuilder from "./TokenizerBuilder.js";
+import DictionaryBuilder from "./dict/builder/DictionaryBuilder.js";
 
 // Public methods
 const kuromoji = {
