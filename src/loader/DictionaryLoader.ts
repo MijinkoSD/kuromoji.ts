@@ -73,12 +73,16 @@ class DictionaryLoader {
     };
 
     const trie = async (): Promise<void> => {
-      const buffers: ArrayBufferLike[] = [];
-
-      const whenErr = (err: Object | null, buffers?: ArrayBufferLike[]) => {
+      const whenErr = (
+        err: Object | null,
+        buffers?: (ArrayBufferLike | undefined)[]
+      ) => {
         if (err || buffers === undefined) {
           prepareCallback(err);
           return;
+        }
+        if (!isNotContainUndefined(buffers)) {
+          return prepareCallback(err);
         }
         const base_buffer = new Int32Array(buffers[0]);
         const check_buffer = new Int32Array(buffers[1]);
@@ -88,17 +92,19 @@ class DictionaryLoader {
       };
 
       // const loadFunc: Promise<void>[] = [];
-      await Promise.all(
+      const buffers: (ArrayBufferLike | undefined)[] = await Promise.all(
         ["base.dat.gz", "check.dat.gz"].map(async (filename) => {
+          let result: ArrayBufferLike | undefined;
           await loadArrayBuffer(
             path.join(dic_path, filename),
             (err, buffer) => {
               if (err || buffer === undefined || buffer == null) {
                 return whenErr(err);
               }
-              buffers.push(buffer);
+              result = buffer;
             }
           );
+          return result;
         })
       );
       whenErr(null, buffers);
