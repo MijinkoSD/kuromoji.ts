@@ -110,7 +110,7 @@ class ViterbiBuilder {
         head_char_class.is_always_invoke === 1
       ) {
         // Process unknown word
-        let key = head_char.toString();
+        let key: SurrogateAwareString | string = head_char;
         if (
           head_char_class.is_grouping === 1 &&
           1 < surrogate_aware_tail.length
@@ -121,7 +121,7 @@ class ViterbiBuilder {
             if (head_char_class.class_name !== next_char_class?.class_name) {
               break;
             }
-            key += next_char;
+            key = key.toString() + next_char;
           }
         }
 
