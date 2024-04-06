@@ -36,7 +36,7 @@ class TokenInfoDictionary {
 
   // left_id right_id word_cost ...
   // ^ this position is token_info_id
-  buildDictionary(entries: number[][]): { [key: number]: string } {
+  buildDictionary(entries: string[][]): { [key: number]: string } {
     var dictionary_entries: { [key: number]: string } = {}; // using as hashmap, string -> string (word_id -> surface_form) to build dictionary
 
     for (var i = 0; i < entries.length; i++) {
@@ -47,9 +47,9 @@ class TokenInfoDictionary {
       }
 
       var surface_form = entry[0].toString();
-      var left_id = entry[1];
-      var right_id = entry[2];
-      var word_cost = entry[3];
+      var left_id = Number(entry[1]);
+      var right_id = Number(entry[2]);
+      var word_cost = Number(entry[3]);
       var feature = entry.slice(4).join(","); // TODO Optimize
 
       // Assertion

@@ -55,8 +55,8 @@ class InvokeDefinitionMap {
           class_name,
           is_always_invoke,
           is_grouping,
-          max_length,
-        ),
+          max_length
+        )
       );
     }
 
@@ -95,7 +95,7 @@ class InvokeDefinitionMap {
    * @returns {number} class_id
    */
   lookup(class_name: string): number | null {
-    var class_id = this.lookup_table[class_name];
+    const class_id = this.lookup_table[class_name];
     if (class_id == null) {
       return null;
     }

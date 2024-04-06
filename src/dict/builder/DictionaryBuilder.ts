@@ -26,8 +26,8 @@ import UnknownDictionary from "../UnknownDictionary";
 import { Key } from "doublearray.ts/dist/types";
 
 class DictionaryBuilder {
-  tid_entries: number[][];
-  unk_entries: number[][];
+  tid_entries: string[][];
+  unk_entries: string[][];
   cc_builder: ConnectionCostsBuilder;
   cd_builder: CharacterDefinitionBuilder;
 
@@ -53,7 +53,7 @@ class DictionaryBuilder {
   }
 
   addTokenInfoDictionary(line: string) {
-    var new_entry = line.split(",").map((e) => Number(e));
+    var new_entry = line.split(",");
     this.tid_entries.push(new_entry);
     return this;
   }
@@ -77,7 +77,7 @@ class DictionaryBuilder {
    * @param {string} line is a line of "unk.def"
    */
   putUnkDefLine(line: string) {
-    this.unk_entries.push(line.split(",").map((e) => Number(e)));
+    this.unk_entries.push(line.split(","));
     return this;
   }
 
@@ -89,7 +89,7 @@ class DictionaryBuilder {
       dictionaries.trie,
       dictionaries.token_info_dictionary,
       this.cc_builder.build(),
-      unknown_dictionary,
+      unknown_dictionary
     );
   }
 
@@ -103,7 +103,7 @@ class DictionaryBuilder {
 
     // using as hashmap, string -> string (word_id -> surface_form) to build dictionary
     var dictionary_entries = token_info_dictionary.buildDictionary(
-      this.tid_entries,
+      this.tid_entries
     );
 
     var trie = this.buildDoubleArray();
