@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import DictionaryLoader from "../../src/loader/DictionaryLoader";
+import NodeDictionaryLoader from "../../src/loader/NodeDictionaryLoader";
 import ViterbiBuilder from "../../src/viterbi/ViterbiBuilder";
 import { beforeAll, chai, describe, it } from "vitest";
 const expect = chai.expect;
@@ -27,7 +27,7 @@ describe("ViterbiBuilder", () => {
 
   beforeAll(
     async () => {
-      const loader = new DictionaryLoader(DIC_DIR);
+      const loader = new NodeDictionaryLoader(DIC_DIR);
       await loader.load((err, dic) => {
         if (dic === undefined) throw TypeError("dic must not be undefined");
         viterbi_builder = new ViterbiBuilder(dic);
