@@ -239,7 +239,11 @@ class DictionaryLoader {
     });
 
     if (prepared_callback_errs.length > 0) {
-      load_callback(prepared_callback_errs, dic);
+      // 元々はエラーが複数発生しても、全てのエラー情報を返さずにどれか1つを返すような仕様だったらしい
+      // 以下の処理で正しいかはわからないけれど、とりあえず1個だけ返すようにする
+      let errIndex = prepared_callback_errs.findIndex((e) => e !== null);
+      errIndex = errIndex == -1 ? 0 : errIndex;
+      load_callback(prepared_callback_errs[errIndex], dic);
     }
   }
 }
