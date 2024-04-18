@@ -18,7 +18,7 @@
 "use strict";
 
 import fs from "node:fs";
-import { gunzip } from "node:zlib";
+import { Inflate } from "pako";
 import DictionaryLoader from "./DictionaryLoader";
 
 /**
@@ -54,16 +54,21 @@ class NodeDictionaryLoader extends DictionaryLoader {
           resolve();
           return;
         }
-        gunzip(buffer, (err2, decompressed) => {
-          if (err2) {
-            callback(err2);
-            resolve();
-            return;
-          }
-          const typed_array = new Uint8Array(decompressed);
-          callback(null, typed_array.buffer);
+
+        const inflate = new Inflate();
+        inflate.push(buffer, true);
+        if (inflate.err) {
+          callback(new Error(inflate.err.toString()));
           resolve();
-        });
+          return;
+        }
+        const decompressed = inflate.result;
+        const typed_array =
+          decompressed instanceof Uint8Array
+            ? decompressed
+            : new TextEncoder().encode(decompressed);
+        callback(null, typed_array.buffer);
+        resolve();
       });
     });
   }
