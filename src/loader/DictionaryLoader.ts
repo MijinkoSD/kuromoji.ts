@@ -15,7 +15,8 @@
  * limitations under the License.
  */
 
-import path from "node:path";
+// import { join } from "path";
+import { pathJoin } from "../util/PathJoin.js";
 import DynamicDictionaries from "../dict/DynamicDictionaries.js";
 import { isNotContainUndefined } from "../util/TypeGuard.js";
 
@@ -96,7 +97,7 @@ class DictionaryLoader {
         ["base.dat.gz", "check.dat.gz"].map(async (filename) => {
           let result: ArrayBufferLike | undefined;
           await loadArrayBuffer(
-            path.join(dic_path, filename),
+            pathJoin([dic_path, filename]),
             (err, buffer) => {
               if (err || buffer === undefined || buffer == null) {
                 return whenErr(err);
@@ -141,7 +142,7 @@ class DictionaryLoader {
           async (filename): Promise<ArrayBufferLike | undefined> => {
             let result: ArrayBufferLike | undefined;
             await loadArrayBuffer(
-              path.join(dic_path, filename),
+              pathJoin([dic_path, filename]),
               (err, buffer) => {
                 if (err || buffer === undefined || buffer == null) {
                   return whenErr(err);
@@ -157,19 +158,22 @@ class DictionaryLoader {
     };
 
     const connectionCostMatrix = async (): Promise<void> => {
-      await loadArrayBuffer(path.join(dic_path, "cc.dat.gz"), (err, buffer) => {
-        if (err) {
-          return prepareCallback(err);
+      await loadArrayBuffer(
+        pathJoin([dic_path, "cc.dat.gz"]),
+        (err, buffer) => {
+          if (err) {
+            return prepareCallback(err);
+          }
+          let cc_buffer: Int16Array;
+          if (buffer === null || buffer === undefined) {
+            cc_buffer = new Int16Array(0);
+          } else {
+            cc_buffer = new Int16Array(buffer);
+          }
+          dic.loadConnectionCosts(cc_buffer);
+          prepareCallback(null);
         }
-        let cc_buffer: Int16Array;
-        if (buffer === null || buffer === undefined) {
-          cc_buffer = new Int16Array(0);
-        } else {
-          cc_buffer = new Int16Array(buffer);
-        }
-        dic.loadConnectionCosts(cc_buffer);
-        prepareCallback(null);
-      });
+      );
     };
 
     const unknownDictionaries = async (): Promise<void> => {
@@ -215,7 +219,7 @@ class DictionaryLoader {
         ].map(async (filename) => {
           let result: ArrayBufferLike | undefined;
           await loadArrayBuffer(
-            path.join(dic_path, filename),
+            pathJoin([dic_path, filename]),
             (err, buffer) => {
               if (err || buffer === undefined || buffer === null) {
                 return whenErr(err);
