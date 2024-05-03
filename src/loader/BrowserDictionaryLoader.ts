@@ -17,7 +17,7 @@
 
 "use strict";
 
-import { gunzip } from "node:zlib";
+import { Inflate } from "pako";
 import DictionaryLoader from "./DictionaryLoader";
 
 /**
@@ -47,7 +47,7 @@ class BrowserDictionaryLoader extends DictionaryLoader {
    * @param {BrowserDictionaryLoader~onLoad} callback Callback function
    */
   async loadArrayBuffer(url: string, callback: BrowserDictionaryLoaderOnLoad) {
-    return new Promise<void>((resolve) => {
+    return new Promise<void>((resolve, reject) => {
       const xhr = new XMLHttpRequest();
       xhr.open("GET", url, true);
       xhr.responseType = "arraybuffer";
@@ -57,12 +57,20 @@ class BrowserDictionaryLoader extends DictionaryLoader {
           resolve();
           return;
         }
-        const arraybuffer = this.response as ArrayBuffer;
+        const arraybuffer = new Uint8Array(this.response as ArrayBuffer);
 
-        gunzip(arraybuffer, (_, result) => {
-          callback(null, result.buffer);
-          resolve();
-        });
+        const inflate = new Inflate();
+        inflate.push(arraybuffer, true);
+        if (inflate.err) {
+          reject(new Error(inflate.err.toString() + ": " + inflate.msg));
+        }
+        const decompressed = inflate.result;
+        const typed_array =
+          decompressed instanceof Uint8Array
+            ? decompressed
+            : new TextEncoder().encode(decompressed);
+        callback(null, typed_array.buffer);
+        resolve();
       };
       xhr.onerror = function (err) {
         callback(err, null);

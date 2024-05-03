@@ -18,6 +18,7 @@
 "use strict";
 
 import Tokenizer from "./Tokenizer";
+import BrowserDictionaryLoader from "./loader/BrowserDictionaryLoader";
 import NodeDictionaryLoader from "./loader/NodeDictionaryLoader";
 
 export interface TokenizerBuilderOption {
@@ -58,6 +59,13 @@ class TokenizerBuilder {
    */
   async build(callback: TokenizerBuilderOnLoad) {
     const loader = new NodeDictionaryLoader(this.dic_path);
+    await loader.load((err, dic) => {
+      callback(toErrorArray(err), new Tokenizer(dic));
+    });
+  }
+
+  async buildBrowser(callback: TokenizerBuilderOnLoad) {
+    const loader = new BrowserDictionaryLoader(this.dic_path);
     await loader.load((err, dic) => {
       callback(toErrorArray(err), new Tokenizer(dic));
     });

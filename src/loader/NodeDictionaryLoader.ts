@@ -48,6 +48,7 @@ class NodeDictionaryLoader extends DictionaryLoader {
    */
   async loadArrayBuffer(file: string, callback: NodeDictionaryLoaderOnLoad) {
     return new Promise<void>((resolve) => {
+      // ここでfile（ファイルパス）からファイルを読み込んでいる
       fs.readFile(file, (err, buffer) => {
         if (err) {
           callback(err);

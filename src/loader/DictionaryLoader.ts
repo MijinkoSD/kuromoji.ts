@@ -94,7 +94,7 @@ class DictionaryLoader {
 
       // const loadFunc: Promise<void>[] = [];
       const buffers: (ArrayBufferLike | undefined)[] = await Promise.all(
-        ["base.dat.gz", "check.dat.gz"].map(async (filename) => {
+        ["base.dat.tgz", "check.dat.tgz"].map(async (filename) => {
           let result: ArrayBufferLike | undefined;
           await loadArrayBuffer(
             pathJoin([dic_path, filename]),
@@ -138,7 +138,7 @@ class DictionaryLoader {
       };
 
       const buffers: (ArrayBufferLike | undefined)[] = await Promise.all(
-        ["tid.dat.gz", "tid_pos.dat.gz", "tid_map.dat.gz"].map(
+        ["tid.dat.tgz", "tid_pos.dat.tgz", "tid_map.dat.tgz"].map(
           async (filename): Promise<ArrayBufferLike | undefined> => {
             let result: ArrayBufferLike | undefined;
             await loadArrayBuffer(
@@ -159,7 +159,7 @@ class DictionaryLoader {
 
     const connectionCostMatrix = async (): Promise<void> => {
       await loadArrayBuffer(
-        pathJoin([dic_path, "cc.dat.gz"]),
+        pathJoin([dic_path, "cc.dat.tgz"]),
         (err, buffer) => {
           if (err) {
             return prepareCallback(err);
@@ -168,7 +168,11 @@ class DictionaryLoader {
           if (buffer === null || buffer === undefined) {
             cc_buffer = new Int16Array(0);
           } else {
-            cc_buffer = new Int16Array(buffer);
+            cc_buffer = new Int16Array(
+              buffer,
+              0,
+              Math.floor(buffer.byteLength / 2)
+            );
           }
           dic.loadConnectionCosts(cc_buffer);
           prepareCallback(null);
@@ -210,12 +214,12 @@ class DictionaryLoader {
 
       const buffers = await Promise.all(
         [
-          "unk.dat.gz",
-          "unk_pos.dat.gz",
-          "unk_map.dat.gz",
-          "unk_char.dat.gz",
-          "unk_compat.dat.gz",
-          "unk_invoke.dat.gz",
+          "unk.dat.tgz",
+          "unk_pos.dat.tgz",
+          "unk_map.dat.tgz",
+          "unk_char.dat.tgz",
+          "unk_compat.dat.tgz",
+          "unk_invoke.dat.tgz",
         ].map(async (filename) => {
           let result: ArrayBufferLike | undefined;
           await loadArrayBuffer(
