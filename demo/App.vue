@@ -4,7 +4,7 @@ import kuromoji from "../src/kuromoji";
 import { ref, onMounted } from "vue";
 import { IpadicFormatterToken } from "../src/util/IpadicFormatter";
 
-const DIC_URL = "dict/";
+const DIC_URL = "/";
 
 const inputText = ref("");
 const tokens = ref<IpadicFormatterToken[]>([]);
@@ -38,9 +38,12 @@ const onChangeInput = () => {
 
 onMounted(() => {
   // Load and prepare tokenizer
-  kuromoji.builder({ dicPath: DIC_URL }).build((error, _tokenizer) => {
-    if (error != null) {
-      console.log(error);
+  kuromoji.builder({ dicPath: DIC_URL }).buildBrowser((errors, _tokenizer) => {
+    if (errors.find((e) => e !== null)) {
+      for (const error of errors) {
+        if (error === null) continue;
+        console.error(error);
+      }
     }
     tokenizer = _tokenizer;
 
@@ -55,7 +58,7 @@ onMounted(() => {
 <template>
   <div class="row">
     <div class="small-12 columns">
-      <h1>kuromoji.js demo</h1>
+      <h1>kuromoji.ts demo</h1>
 
       <div id="demo" class="row">
         <div class="large-12 columns">
