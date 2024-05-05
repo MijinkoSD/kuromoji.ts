@@ -23,7 +23,7 @@ describe("PathJoin", () => {
     const file = "/bar.gz";
     const path = pathJoin([dir, file]);
 
-    const expected = "foo//bar.gz";
+    const expected = "foo/bar.gz";
     expect(path).equals(expected);
   });
 });
