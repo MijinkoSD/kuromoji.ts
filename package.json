@@ -5,7 +5,7 @@
   "type": "module",
   "files": [
     "dist",
-    "index.d.ts"
+    "dict"
   ],
   "main": "./dist/counter.umd.cjs",
   "module": "./dist/counter.js",
@@ -23,7 +23,8 @@
     "test": "vitest",
     "type-check": "tsc --noEmit",
     "create-dat": "run-s build run-create-dat",
-    "run-create-dat": "node ./dist/dict/builder/CreateDatFiles.js"
+    "run-create-dat": "node ./dist/dict/builder/CreateDatFiles.js",
+    "compress-dict": "echo 辞書データの圧縮機能は未実装です"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.10.1",
