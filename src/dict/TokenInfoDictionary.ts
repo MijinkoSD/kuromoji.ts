@@ -17,7 +17,7 @@
 
 "use strict";
 
-import ByteBuffer from "../util/ByteBuffer";
+import ByteBuffer from "../util/ByteBuffer.js";
 
 class TokenInfoDictionary {
   dictionary: ByteBuffer;

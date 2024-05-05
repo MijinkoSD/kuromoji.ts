@@ -17,9 +17,9 @@
 
 "use strict";
 
-import InvokeDefinitionMap from "./InvokeDefinitionMap";
-import CharacterClass from "./CharacterClass";
-import SurrogateAwareString from "../util/SurrogateAwareString";
+import InvokeDefinitionMap from "./InvokeDefinitionMap.js";
+import CharacterClass from "./CharacterClass.js";
+import SurrogateAwareString from "../util/SurrogateAwareString.js";
 
 const DEFAULT_CATEGORY = "DEFAULT";
 
@@ -49,20 +49,19 @@ class CharacterDefinition {
   static load(
     cat_map_buffer: Uint8Array,
     compat_cat_map_buffer: Uint32Array,
-    invoke_def_buffer: Uint8Array,
+    invoke_def_buffer: Uint8Array
   ): CharacterDefinition {
     var char_def = new CharacterDefinition();
     char_def.character_category_map = cat_map_buffer;
     char_def.compatible_category_map = compat_cat_map_buffer;
-    char_def.invoke_definition_map = InvokeDefinitionMap.load(
-      invoke_def_buffer,
-    );
+    char_def.invoke_definition_map =
+      InvokeDefinitionMap.load(invoke_def_buffer);
     return char_def;
   }
 
   static parseCharCategory(
     class_id: number,
-    parsed_category_def: string[],
+    parsed_category_def: string[]
   ): CharacterClass | null {
     var category = parsed_category_def[1];
     var invoke = parseInt(parsed_category_def[2]);
@@ -88,19 +87,20 @@ class CharacterDefinition {
       category,
       is_invoke,
       is_grouping,
-      max_length,
+      max_length
     );
   }
 
   static parseCategoryMapping(
-    parsed_category_mapping: string[],
+    parsed_category_mapping: string[]
   ): Omit<CategoryMapping, "end"> {
     var start = parseInt(parsed_category_mapping[1]);
     var default_category = parsed_category_mapping[2];
-    var compatible_category = (3 < parsed_category_mapping.length)
-      ? parsed_category_mapping.slice(3)
-      : [];
-    if (!isFinite(start) || start < 0 || start > 0xFFFF) {
+    var compatible_category =
+      3 < parsed_category_mapping.length
+        ? parsed_category_mapping.slice(3)
+        : [];
+    if (!isFinite(start) || start < 0 || start > 0xffff) {
       console.log("char.def parse error. CODE is invalid:" + start);
     }
     return {
@@ -111,18 +111,19 @@ class CharacterDefinition {
   }
 
   static parseRangeCategoryMapping(
-    parsed_category_mapping: string[],
+    parsed_category_mapping: string[]
   ): CategoryMapping {
     var start = parseInt(parsed_category_mapping[1]);
     var end = parseInt(parsed_category_mapping[2]);
     var default_category = parsed_category_mapping[3];
-    var compatible_category = (4 < parsed_category_mapping.length)
-      ? parsed_category_mapping.slice(4)
-      : [];
-    if (!isFinite(start) || start < 0 || start > 0xFFFF) {
+    var compatible_category =
+      4 < parsed_category_mapping.length
+        ? parsed_category_mapping.slice(4)
+        : [];
+    if (!isFinite(start) || start < 0 || start > 0xffff) {
       console.log("char.def parse error. CODE is invalid:" + start);
     }
-    if (!isFinite(end) || end < 0 || end > 0xFFFF) {
+    if (!isFinite(end) || end < 0 || end > 0xffff) {
       console.log("char.def parse error. CODE is invalid:" + end);
     }
     return {
@@ -137,9 +138,7 @@ class CharacterDefinition {
    * Initializing method
    * @param {Array} category_mapping Array of category mapping
    */
-  initCategoryMappings(
-    category_mapping?: CategoryMapping[],
-  ) {
+  initCategoryMappings(category_mapping?: CategoryMapping[]) {
     // Initialize map by DEFAULT class
     var code_point;
     if (category_mapping != null) {
@@ -148,8 +147,8 @@ class CharacterDefinition {
         var end = mapping.end ?? mapping.start;
         for (code_point = mapping.start; code_point <= end; code_point++) {
           // Default Category class ID
-          this.character_category_map[code_point] = this.invoke_definition_map
-            ?.lookup(mapping.default) ?? 0;
+          this.character_category_map[code_point] =
+            this.invoke_definition_map?.lookup(mapping.default) ?? 0;
 
           for (var j = 0; j < mapping.compatible.length; j++) {
             var bitset = this.compatible_category_map[code_point];
@@ -157,9 +156,8 @@ class CharacterDefinition {
             if (compatible_category == null) {
               continue;
             }
-            var class_id = this.invoke_definition_map?.lookup(
-              compatible_category,
-            ); // Default Category
+            var class_id =
+              this.invoke_definition_map?.lookup(compatible_category); // Default Category
             if (class_id == null) {
               continue;
             }
@@ -210,11 +208,11 @@ class CharacterDefinition {
       return classes;
     }
 
-    for (var bit = 0; bit < 32; bit++) { // Treat "bit" as a class ID
-      if (((integer << (31 - bit)) >>> 31) === 1) {
-        var character_class = this.invoke_definition_map?.getCharacterClass(
-          bit,
-        );
+    for (var bit = 0; bit < 32; bit++) {
+      // Treat "bit" as a class ID
+      if ((integer << (31 - bit)) >>> 31 === 1) {
+        var character_class =
+          this.invoke_definition_map?.getCharacterClass(bit);
         if (character_class == null) {
           continue;
         }

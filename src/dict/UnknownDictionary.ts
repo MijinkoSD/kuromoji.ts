@@ -17,9 +17,9 @@
 
 "use strict";
 
-import TokenInfoDictionary from "./TokenInfoDictionary";
-import CharacterDefinition from "./CharacterDefinition";
-import ByteBuffer from "../util/ByteBuffer";
+import TokenInfoDictionary from "./TokenInfoDictionary.js";
+import CharacterDefinition from "./CharacterDefinition.js";
+import ByteBuffer from "../util/ByteBuffer.js";
 
 // Inherit from TokenInfoDictionary as a super class
 class UnknownDictionary extends TokenInfoDictionary {
@@ -43,9 +43,7 @@ class UnknownDictionary extends TokenInfoDictionary {
   // Inherit from TokenInfoDictionary as a super class
   // UnknownDictionary.prototype = Object.create(TokenInfoDictionary.prototype);
 
-  characterDefinition(
-    character_definition: CharacterDefinition,
-  ) {
+  characterDefinition(character_definition: CharacterDefinition) {
     this.character_definition = character_definition;
     return this;
   }
@@ -64,7 +62,7 @@ class UnknownDictionary extends TokenInfoDictionary {
     unk_map_buffer: Uint8Array,
     cat_map_buffer: Uint8Array,
     compat_cat_map_buffer: Uint32Array,
-    invoke_def_buffer: Uint8Array,
+    invoke_def_buffer: Uint8Array
   ) {
     this.loadDictionary(unk_buffer);
     this.loadPosVector(unk_pos_buffer);
@@ -72,7 +70,7 @@ class UnknownDictionary extends TokenInfoDictionary {
     this.character_definition = CharacterDefinition.load(
       cat_map_buffer,
       compat_cat_map_buffer,
-      invoke_def_buffer,
+      invoke_def_buffer
     );
   }
 }

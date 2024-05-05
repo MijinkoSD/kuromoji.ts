@@ -17,7 +17,7 @@
 
 "use strict";
 
-import ConnectionCosts from "../ConnectionCosts";
+import ConnectionCosts from "../ConnectionCosts.js";
 
 class ConnectionCostsBuilder {
   lines: number;
@@ -44,7 +44,7 @@ class ConnectionCostsBuilder {
 
       this.connection_cost = new ConnectionCosts(
         forward_dimension,
-        backward_dimension,
+        backward_dimension
       );
       this.lines++;
       return;
@@ -61,7 +61,9 @@ class ConnectionCostsBuilder {
     var cost = parseInt(costs[2]);
 
     if (
-      forward_id < 0 || backward_id < 0 || !isFinite(forward_id) ||
+      forward_id < 0 ||
+      backward_id < 0 ||
+      !isFinite(forward_id) ||
       !isFinite(backward_id) ||
       this.connection_cost.forward_dimension <= forward_id ||
       this.connection_cost.backward_dimension <= backward_id

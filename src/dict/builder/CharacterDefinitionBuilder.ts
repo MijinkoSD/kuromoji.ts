@@ -17,9 +17,9 @@
 
 "use strict";
 
-import CharacterClass from "../CharacterClass";
-import CharacterDefinition from "../CharacterDefinition";
-import InvokeDefinitionMap from "../InvokeDefinitionMap";
+import CharacterClass from "../CharacterClass.js";
+import CharacterDefinition from "../CharacterDefinition.js";
+import InvokeDefinitionMap from "../InvokeDefinitionMap.js";
 
 const CATEGORY_DEF_PATTERN = /^(\w+)\s+(\d)\s+(\d)\s+(\d)/;
 const CATEGORY_MAPPING_PATTERN =
@@ -49,7 +49,7 @@ class CharacterDefinitionBuilder {
       var class_id = this.character_category_definition.length;
       var char_class = CharacterDefinition.parseCharCategory(
         class_id,
-        parsed_category_def,
+        parsed_category_def
       );
       if (char_class == null) {
         return;
@@ -60,16 +60,15 @@ class CharacterDefinitionBuilder {
     var parsed_category_mapping = CATEGORY_MAPPING_PATTERN.exec(line);
     if (parsed_category_mapping != null) {
       var mapping = CharacterDefinition.parseCategoryMapping(
-        parsed_category_mapping,
+        parsed_category_mapping
       );
       this.category_mapping.push(mapping);
     }
-    var parsed_range_category_mapping = RANGE_CATEGORY_MAPPING_PATTERN.exec(
-      line,
-    );
+    var parsed_range_category_mapping =
+      RANGE_CATEGORY_MAPPING_PATTERN.exec(line);
     if (parsed_range_category_mapping != null) {
       var range_mapping = CharacterDefinition.parseRangeCategoryMapping(
-        parsed_range_category_mapping,
+        parsed_range_category_mapping
       );
       this.category_mapping.push(range_mapping);
     }
@@ -78,7 +77,7 @@ class CharacterDefinitionBuilder {
   build(): CharacterDefinition {
     // TODO If DEFAULT category does not exist, throw error
     this.char_def.invoke_definition_map?.init(
-      this.character_category_definition,
+      this.character_category_definition
     );
     this.char_def.initCategoryMappings(this.category_mapping);
     return this.char_def;

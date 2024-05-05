@@ -15,12 +15,12 @@
  * limitations under the License.
  */
 
-import ViterbiBuilder from "./viterbi/ViterbiBuilder";
-import ViterbiSearcher from "./viterbi/ViterbiSearcher";
-import IpadicFormatter from "./util/IpadicFormatter";
-import { IpadicFormatterToken } from "./util/IpadicFormatter";
-import DynamicDictionaries from "./dict/DynamicDictionaries";
-import ViterbiLattice from "./viterbi/ViterbiLattice";
+import ViterbiBuilder from "./viterbi/ViterbiBuilder.js";
+import ViterbiSearcher from "./viterbi/ViterbiSearcher.js";
+import IpadicFormatter from "./util/IpadicFormatter.js";
+import { IpadicFormatterToken } from "./util/IpadicFormatter.js";
+import DynamicDictionaries from "./dict/DynamicDictionaries.js";
+import ViterbiLattice from "./viterbi/ViterbiLattice.js";
 
 /**
  * 読点と句読点。

@@ -18,12 +18,12 @@
 "use strict";
 
 import doublearray from "doublearray.ts";
-import DynamicDictionaries from "../DynamicDictionaries";
-import TokenInfoDictionary from "../TokenInfoDictionary";
-import ConnectionCostsBuilder from "./ConnectionCostsBuilder";
-import CharacterDefinitionBuilder from "./CharacterDefinitionBuilder";
-import UnknownDictionary from "../UnknownDictionary";
-import { Key } from "doublearray.ts/dist/types";
+import DynamicDictionaries from "../DynamicDictionaries.js";
+import TokenInfoDictionary from "../TokenInfoDictionary.js";
+import ConnectionCostsBuilder from "./ConnectionCostsBuilder.js";
+import CharacterDefinitionBuilder from "./CharacterDefinitionBuilder.js";
+import UnknownDictionary from "../UnknownDictionary.js";
+import type { Key } from "doublearray.ts/dist/types";
 
 class DictionaryBuilder {
   tid_entries: string[][];

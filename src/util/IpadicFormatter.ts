@@ -17,7 +17,7 @@
 
 "use strict";
 
-import { ViterbiNodeType } from "../viterbi/ViterbiNode";
+import { ViterbiNodeType } from "../viterbi/ViterbiNode.js";
 
 export interface IpadicFormatterToken {
   word_id: number;

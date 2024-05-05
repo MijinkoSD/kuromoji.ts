@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-import ConnectionCosts from "../dict/ConnectionCosts";
-import ViterbiLattice from "./ViterbiLattice";
-import ViterbiNode from "./ViterbiNode";
+import ConnectionCosts from "../dict/ConnectionCosts.js";
+import ViterbiLattice from "./ViterbiLattice.js";
+import ViterbiNode from "./ViterbiNode.js";
 
 class ViterbiSearcher {
   connection_costs: ConnectionCosts;

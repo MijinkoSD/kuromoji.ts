@@ -17,7 +17,7 @@
 
 "use strict";
 
-import ViterbiNode from "./ViterbiNode";
+import ViterbiNode from "./ViterbiNode.js";
 
 class ViterbiLattice {
   nodes_end_at: ViterbiNode[][];

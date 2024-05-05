@@ -18,7 +18,7 @@
 "use strict";
 
 import { Inflate } from "pako";
-import DictionaryLoader from "./DictionaryLoader";
+import DictionaryLoader from "./DictionaryLoader.js";
 
 /**
  * Callback

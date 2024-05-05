@@ -17,8 +17,8 @@
 
 "use strict";
 
-import ByteBuffer from "../util/ByteBuffer";
-import CharacterClass from "./CharacterClass";
+import ByteBuffer from "../util/ByteBuffer.js";
+import CharacterClass from "./CharacterClass.js";
 
 class InvokeDefinitionMap {
   map: CharacterClass[];

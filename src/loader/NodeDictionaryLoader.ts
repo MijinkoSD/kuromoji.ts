@@ -19,7 +19,7 @@
 
 import fs from "node:fs";
 import { Inflate } from "pako";
-import DictionaryLoader from "./DictionaryLoader";
+import DictionaryLoader from "./DictionaryLoader.js";
 
 /**
  * @callback NodeDictionaryLoader~onLoad

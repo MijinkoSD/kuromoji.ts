@@ -17,9 +17,9 @@
 
 "use strict";
 
-import Tokenizer from "./Tokenizer";
-import BrowserDictionaryLoader from "./loader/BrowserDictionaryLoader";
-import NodeDictionaryLoader from "./loader/NodeDictionaryLoader";
+import Tokenizer from "./Tokenizer.js";
+import BrowserDictionaryLoader from "./loader/BrowserDictionaryLoader.js";
+import NodeDictionaryLoader from "./loader/NodeDictionaryLoader.js";
 
 export interface TokenizerBuilderOption {
   dicPath?: string;

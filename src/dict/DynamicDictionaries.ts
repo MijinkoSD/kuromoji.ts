@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-import TokenInfoDictionary from "./TokenInfoDictionary";
-import ConnectionCosts from "./ConnectionCosts";
-import UnknownDictionary from "./UnknownDictionary";
+import TokenInfoDictionary from "./TokenInfoDictionary.js";
+import ConnectionCosts from "./ConnectionCosts.js";
+import UnknownDictionary from "./UnknownDictionary.js";
 import doublearray from "doublearray.ts";
 import type DoubleArray from "doublearray.ts/dist/doubleArrayClass.js";
 import { ArrayBuffer } from "doublearray.ts/dist/types.js";
