@@ -10,7 +10,8 @@ export default mergeConfig(
       coverage: {
         enabled: true,
         provider: "istanbul",
-        exclude: ["demo/**"],
+        exclude: ["demo/**", "dist/**", "dist-demo/**"],
+        reporter: ["text", "html", "json", "json-summary"],
       },
     },
   })
