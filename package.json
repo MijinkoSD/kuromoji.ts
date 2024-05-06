@@ -1,20 +1,12 @@
 {
-  "name": "kuromoji.js_2",
-  "private": true,
-  "version": "0.0.0",
+  "name": "kuromoji.ts",
+  "version": "1.0.0",
   "type": "module",
   "files": [
     "dist",
     "dict"
   ],
-  "main": "./dist/counter.umd.cjs",
-  "module": "./dist/counter.js",
-  "types": "./index.d.ts",
-  "exports": {
-    "types": "./index.d.ts",
-    "import": "./dist/counter.js",
-    "require": "./dist/counter.umd.cjs"
-  },
+  "main": "./dist/kuromoji.js",
   "scripts": {
     "dev": "vite",
     "build-demo": "run-p type-check build-only-demo",
