@@ -17,12 +17,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Use Node.js
-        uses: actions/setup-node@v4.0.2
+        uses: actions/setup-node@v4
         with:
           node-version: "18.13"
 
       - name: Setup Pnpm
-        uses: pnpm/action-setup@v3.0.0
+        uses: pnpm/action-setup@v3
         with:
           version: 9.0.6
 
@@ -65,6 +65,6 @@ jobs:
           badge-path: docs/images/coverage/branches-badge.svg
 
       - name: Commit badges
-        uses: stefanzweifel/git-auto-commit-action@v5.0.1
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           file_pattern: "docs/images/coverage/*.svg"
