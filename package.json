@@ -22,6 +22,8 @@
     "build": "tsc -d",
     "test": "vitest",
     "type-check": "tsc --noEmit",
+    "coverrage": "nyc npm test",
+    "vitest-ui": "vitest --ui",
     "create-dat": "run-s build run-create-dat",
     "run-create-dat": "node ./dist/dict/builder/CreateDatFiles.js",
     "compress-dict": "echo 辞書データの圧縮機能は未実装です"
@@ -30,6 +32,8 @@
     "@rushstack/eslint-patch": "^1.10.1",
     "@types/pako": "^2.0.3",
     "@vitejs/plugin-vue": "^5.0.4",
+    "@vitest/coverage-istanbul": "^1.6.0",
+    "@vitest/ui": "^1.6.0",
     "@vue/eslint-config-prettier": "^9.0.0",
     "@vue/eslint-config-typescript": "^13.0.0",
     "@vue/tsconfig": "^0.5.1",
@@ -42,7 +46,7 @@
     "typescript": "^5.4.4",
     "vite": "^5.2.8",
     "vite-plugin-vue-devtools": "^7.0.25",
-    "vitest": "^1.4.0",
+    "vitest": "^1.6.0",
     "vue": "^3.4.21",
     "vue-tsc": "^2.0.11"
   },
