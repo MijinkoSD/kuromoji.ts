@@ -1,7 +1,7 @@
 # Output directory
 dict-uncompressed
 dist-demo
-coverage
+/coverage
 
 # Dependency directory
 node_modules
