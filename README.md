@@ -1,85 +1,34 @@
-kuromoji.js
-===========
+# kuromoji.ts
 
-[![Build Status](https://travis-ci.org/takuyaa/kuromoji.js.svg?branch=master)](https://travis-ci.org/takuyaa/kuromoji.js)
-[![Coverage Status](https://coveralls.io/repos/github/takuyaa/kuromoji.js/badge.svg?branch=master)](https://coveralls.io/github/takuyaa/kuromoji.js?branch=master)
-[![npm version](https://badge.fury.io/js/kuromoji.svg)](https://badge.fury.io/js/kuromoji)
-[![dependencies](https://david-dm.org/takuyaa/kuromoji.js.svg)](https://david-dm.org/takuyaa/kuromoji.js)
-[![Code Climate](https://codeclimate.com/github/takuyaa/kuromoji.js/badges/gpa.svg)](https://codeclimate.com/github/takuyaa/kuromoji.js)
-[![Downloads](https://img.shields.io/npm/dm/kuromoji.svg)](https://www.npmjs.com/package/kuromoji)
+[![Build Status](https://github.com/MijinkoSD/kuromoji.ts/actions/workflows/build.yml/badge.svg)]() [![Test Status](https://github.com/MijinkoSD/kuromoji.ts/actions/workflows/run-test.yml/badge.svg)]() [![Deploy Pages Status](https://github.com/MijinkoSD/kuromoji.ts/actions/workflows/deploy-github-pages.yml/badge.svg)]()
+![Coverage (Lines)](./docs/images/coverage/lines-badge.svg) ![Coverage (Statements)](./docs/images/coverage/statements-badge.svg) ![Coverage (Functions)](./docs/images/coverage/functions-badge.svg) ![Coverage (Branches)](./docs/images/coverage/branches-badge.svg)
 
-JavaScript implementation of Japanese morphological analyzer.
-This is a pure JavaScript porting of [Kuromoji](https://www.atilika.com/ja/kuromoji/).
+<!-- [![npm version](https://badge.fury.io/js/kuromoji.svg)](https://badge.fury.io/js/kuromoji) -->
 
-You can see how kuromoji.js works in [demo site](https://takuyaa.github.io/kuromoji.js/demo/tokenize.html).
+The code is implemented in TypeScript and is a port from the JavaScript implementation [kuromoji.js](https://github.com/takuyaa/kuromoji.js).
 
+You can see the actual behavior on the [demo page](https://MijinkoSD.github.io/kuromoji.ts/index.html).
 
-Directory
----------
+## README.md in other languages:
 
-Directory tree is as follows:
+- [日本語版](./README-ja.md)
 
-    build/
-      kuromoji.js -- JavaScript file for browser (Browserified)
-    demo/         -- Demo
-    dict/         -- Dictionaries for tokenizer (gzipped)
-    example/      -- Examples to use in Node.js
-    src/          -- JavaScript source
-    test/         -- Unit test
+## Directory
 
+```
+demo/         -- Demo page
+dict/         -- Dictionary data for tokenizer (compressed with gunzip)
+dist/         -- Transpiled JavaScript source code
+docs/         -- Image data for README.md
+src/          -- TypeScript source code
+test/         -- Unit test
+```
 
-Usage
------
+## Usage
 
-You can tokenize sentences with only 5 lines of code.
-If you need working examples, you can see the files under the demo or example directory.
+Please refer to [Usage](/docs/usage.md).
 
-
-### Node.js
-
-Install with npm package manager:
-
-    npm install kuromoji
-
-Load this library as follows:
-
-    var kuromoji = require("kuromoji");
-
-You can prepare tokenizer like this:
-
-    kuromoji.builder({ dicPath: "path/to/dictionary/dir/" }).build(function (err, tokenizer) {
-        // tokenizer is ready
-        var path = tokenizer.tokenize("すもももももももものうち");
-        console.log(path);
-    });
-
-
-
-### Browser
-
-You only need the build/kuromoji.js and dict/*.dat.gz files
-
-Install with Bower package manager:
-
-    bower install kuromoji
-
-Or you can use the kuromoji.js file and dictionary files from the GitHub repository.
-
-In your HTML:
-
-    <script src="url/to/kuromoji.js"></script>
-
-In your JavaScript:
-
-    kuromoji.builder({ dicPath: "/url/to/dictionary/dir/" }).build(function (err, tokenizer) {
-        // tokenizer is ready
-        var path = tokenizer.tokenize("すもももももももものうち");
-        console.log(path);
-    });
-
-
-API
----
+## API
 
 The function tokenize() returns an JSON array like this:
 
@@ -99,6 +48,4 @@ The function tokenize() returns an JSON array like this:
         pronunciation: 'クロモジ'  // 発音
       } ]
 
-(This is defined in src/util/IpadicFormatter.js)
-
-See also [JSDoc page](https://takuyaa.github.io/kuromoji.js/jsdoc/) in details.
+This is defined in [src/util/IpadicFormatter.ts](/src/util/IpadicFormatter.ts).
