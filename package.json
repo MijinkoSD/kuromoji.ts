@@ -8,6 +8,22 @@
     "dict"
   ],
   "main": "./dist/kuromoji.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MijinkoSD/kuromoji.ts.git"
+  },
+  "author": "takuyaa",
+  "contributors": [
+    {
+      "name": "MijinkoSD",
+      "url": "https://github.com/MijinkoSD"
+    }
+  ],
+  "license": "Apache-2.0",
+  "homepage": "https://mijinkosd.github.io/kuromoji.ts/index.html",
+  "bugs": {
+    "url": "https://github.com/MijinkoSD/kuromoji.ts/issues"
+  },
   "scripts": {
     "dev": "vite",
     "build-demo": "run-p type-check build-only-demo",
