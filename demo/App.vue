@@ -5,7 +5,7 @@ import { ref, onMounted } from "vue";
 import { IpadicFormatterToken } from "../src/util/IpadicFormatter";
 import ResultTable from "./components/ResultTable.vue";
 
-const DIC_URL = "/";
+const DIC_URL = "./";
 
 const inputText = ref("");
 const tokens = ref<IpadicFormatterToken[]>([]);
