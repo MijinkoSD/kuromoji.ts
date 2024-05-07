@@ -1,6 +1,6 @@
 # kuromoji.ts
 
-[![Build Status](https://github.com/MijinkoSD/kuromoji.ts/actions/workflows/build.yml/badge.svg)]() [![Test Status](https://github.com/MijinkoSD/kuromoji.ts/actions/workflows/run-test.yml/badge.svg)]() [![Deploy Pages Status](https://github.com/MijinkoSD/kuromoji.ts/actions/workflows/deploy-github-pages.yml/badge.svg)]()
+[![Build Status](https://github.com/MijinkoSD/kuromoji.ts/actions/workflows/build.yml/badge.svg)]() [![Test Status](https://github.com/MijinkoSD/kuromoji.ts/actions/workflows/run-test.yml/badge.svg)]() [![Deploy Pages Status](https://github.com/MijinkoSD/kuromoji.ts/actions/workflows/deploy-github-pages.yml/badge.svg)]()  
 ![Coverage (Lines)](./docs/images/coverage/lines-badge.svg) ![Coverage (Statements)](./docs/images/coverage/statements-badge.svg) ![Coverage (Functions)](./docs/images/coverage/functions-badge.svg) ![Coverage (Branches)](./docs/images/coverage/branches-badge.svg)
 
 <!-- [![npm version](https://badge.fury.io/js/kuromoji.svg)](https://badge.fury.io/js/kuromoji) -->
