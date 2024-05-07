@@ -16,4 +16,5 @@ export default defineConfig({
     outDir: "./dist-demo",
   },
   publicDir: "./dict",
+  base: './',
 });
